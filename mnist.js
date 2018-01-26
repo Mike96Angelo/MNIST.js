@@ -88,7 +88,7 @@ module.exports = shuffleData => {
     new Float32Array(require('./test/6.json')),
     new Float32Array(require('./test/7.json')),
     new Float32Array(require('./test/8.json')),
-    new Float32Array(require('./test/9.json')),
+    new Float32Array(require('./test/9.json'))
   ]
   console.log('loaded tests', test.reduce((a, v) => a + v.length / 784, 0));
 
@@ -102,7 +102,7 @@ module.exports = shuffleData => {
     new Float32Array(require('./training/6.json')),
     new Float32Array(require('./training/7.json')),
     new Float32Array(require('./training/8.json')),
-    new Float32Array(require('./training/9.json')),
+    new Float32Array(require('./training/9.json'))
   ]
 
   console.log('loaded trainings', training.reduce((a, v) => a + v.length / 784, 0));
@@ -110,7 +110,7 @@ module.exports = shuffleData => {
   if (shuffleData) {
     training.forEach((a, i) => {
       shuffle(a)
-      console.log(`shuffled training digit ${i}s`)
+      console.log(`shuffled training digit ${i}`)
     })
   }
 
@@ -122,32 +122,36 @@ module.exports = shuffleData => {
   let testI = 0
   let nextTest = () => testKeys[testI++]
 
-  let trainingSet = {
-    input: {
-      data: interleave(training, 784, nextTraining),
-      shape: [trainingKeys.length, 784]
-    },
-    output: {
-      data: makeOutput(trainingKeys, 10),
-      shape: [trainingKeys.length, 10]
-    }
-  }
-  console.log('interleaved training data')
-
-  let testSet = {
-    input: {
-      data: interleave(test, 784, nextTest),
-      shape: [testKeys.length, 784]
-    },
-    output: {
-      data: makeOutput(testKeys, 10),
-      shape: [testKeys.length, 10]
-    }
-  }
+  let testDataIn = interleave(test, 784, nextTest)
+  let testDataOut = makeOutput(testKeys, 10)
   console.log('interleaved test data')
 
-  return {
-    trainingSet,
-    testSet
+  let trainDataIn = interleave(training, 784, nextTraining)
+  let trainDataOut = makeOutput(trainingKeys, 10)
+  console.log('interleaved training data')
+
+  return (trainNum, testNum) => {
+    return {
+      training: {
+        input: {
+          data: trainDataIn.subarray(0, trainNum * 784),
+          shape: [trainNum * 784, 784]
+        },
+        output: {
+          data: trainDataOut.subarray(0, trainNum * 10),
+          shape: [trainNum * 10, 10]
+        }
+      },
+      test: {
+        input: {
+          data: testDataIn.subarray(0, testNum * 784),
+          shape: [testNum * 784, 784]
+        },
+        output: {
+          data: testDataOut.subarray(0, testNum * 10),
+          shape: [testNum * 10, 10]
+        }
+      }
+    }
   }
 }
