@@ -1,5 +1,5 @@
 # MNIST.js
-MNIST data set in JSON format with helper functions for using the dataset
+MNIST dataset for NodeJS values are Float32 numbers between `0` and `1` 
 
 ```javascript
 // if you want the digits to be shuffled before they are randomly interleaved.
