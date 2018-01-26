@@ -131,25 +131,27 @@ module.exports = shuffleData => {
   console.log('interleaved training data')
 
   return (trainNum, testNum) => {
+    trainNum = Math.min(60000, trainNum)
+    testNum = Math.min(10000, testNum)
     return {
       training: {
         input: {
           data: trainDataIn.subarray(0, trainNum * 784),
-          shape: [trainNum * 784, 784]
+          shape: [trainNum, 784]
         },
         output: {
           data: trainDataOut.subarray(0, trainNum * 10),
-          shape: [trainNum * 10, 10]
+          shape: [trainNum, 10]
         }
       },
       test: {
         input: {
           data: testDataIn.subarray(0, testNum * 784),
-          shape: [testNum * 784, 784]
+          shape: [testNum, 784]
         },
         output: {
           data: testDataOut.subarray(0, testNum * 10),
-          shape: [testNum * 10, 10]
+          shape: [testNum, 10]
         }
       }
     }
