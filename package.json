@@ -1,0 +1,22 @@
+{
+  "name": "mnist",
+  "version": "1.0.0",
+  "description": "MNIST data set in JSON format with helper functions for using the dataset",
+  "main": "mnist.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mike96Angelo/MNIST.js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mike96Angelo/MNIST.js/issues"
+  },
+  "homepage": "https://github.com/Mike96Angelo/MNIST.js#readme"
+}
