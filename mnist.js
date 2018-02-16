@@ -117,8 +117,6 @@ module.exports = shuffleData => {
   let trainingKeys = interleave(training.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1, false)
   let testKeys = interleave(test.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1, false)
 
-  console.log(trainingKeys, testKeys);
-
   let trainI = 0
   let nextTraining = () => trainingKeys[trainI++]
   let testI = 0

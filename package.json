@@ -1,6 +1,6 @@
 {
   "name": "mnist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MNIST data set in JSON format with helper functions for using the dataset",
   "main": "mnist.js",
   "directories": {
