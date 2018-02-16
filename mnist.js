@@ -114,19 +114,21 @@ module.exports = shuffleData => {
     })
   }
 
-  let trainingKeys = interleave(training.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1, true)
-  let testKeys = interleave(test.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1)
+  let trainingKeys = interleave(training.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1, false)
+  let testKeys = interleave(test.map((a, i) => new Float32Array(a.length / 784).fill(i)), 1, false)
+
+  console.log(trainingKeys, testKeys);
 
   let trainI = 0
   let nextTraining = () => trainingKeys[trainI++]
   let testI = 0
   let nextTest = () => testKeys[testI++]
 
-  let testDataIn = interleave(test, 784, nextTest)
+  let testDataIn = interleave(test, 784, false)
   let testDataOut = makeOutput(testKeys, 10)
   console.log('interleaved test data')
 
-  let trainDataIn = interleave(training, 784, nextTraining)
+  let trainDataIn = interleave(training, 784, false)
   let trainDataOut = makeOutput(trainingKeys, 10)
   console.log('interleaved training data')
 
@@ -151,6 +153,49 @@ module.exports = shuffleData => {
           data: testDataOut.subarray(0, testNum * 10),
           shape: [testNum * 10, 10]
         }
+      },
+      draw(img, perd, label) {
+        // images are 28x28 but terminal windows are 80x24
+        // we will draw the images 56x28
+        // as the line hight is roughly double the char width
+        let str = ''
+        for (var y = 0; y < 28; y++) {
+          for (var x = 0; x < 28; x++) {
+            let v = img[y * 28 + x]
+            if (v > 0.25) {
+              str += '# '
+            } else {
+              str += '  '
+            }
+          }
+
+          if (y == 9) {
+            str += '  label: ' + label.indexOf(1)
+          }
+
+          if (y == 12) {
+            str += '  predictions:'
+          }
+
+          let p = y - 13
+
+          if (p >= 0 && p < 10) {
+            let percent = (100 * perd[p]).toFixed(4)
+
+            str += '  ' + p
+            if (percent < 10) {
+              str += '     '
+            } else if (percent < 100) {
+              str += '    '
+            } else {
+              str += '   '
+            }
+            str += percent + '%'
+          }
+
+          str += '\n'
+        }
+        console.log(str)
       }
     }
   }
